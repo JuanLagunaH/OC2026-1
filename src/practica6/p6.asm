@@ -44,7 +44,7 @@ _start:
     call putchar
     call putchar
 
-
+    xor ebx, ebx
 	mov	eax, 1	    	; seleccionar llamada al sistema para fin de programa
 	int	0x80        	; llamada al sistema - fin de programa
 
