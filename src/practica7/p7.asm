@@ -16,11 +16,11 @@ _start:
     call putchar
     call putchar
 
-    ;cadena a entero(atoi)
+    ;atoi
     mov edx, cad
     call atoi
 
-    ;entero a cadena(itoa)
+    ;itoa
     mov edx, resultado
     mov ecx, 64
     call itoa
