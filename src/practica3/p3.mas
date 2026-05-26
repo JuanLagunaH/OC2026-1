@@ -1,0 +1,193 @@
+Inicio, Input
+Store Opc
+
+//caso 1
+Load Opc
+Subt Uno
+SkipCond 400
+Jump Caso2
+JnS CapturaAB
+Jump Inicio
+
+//caso 2
+Caso2, Load Opc
+Subt Dos
+SkipCond 400
+Jump Caso3
+JnS ShiftIzquierda
+Load SH_R
+Output
+Jump Inicio
+
+//caso 3
+Caso3, Load Opc
+Subt Tres
+SkipCond 400
+Jump Caso4
+JnS ShiftDerecha
+Load SH_R
+Output
+Jump Inicio
+
+//caso 4
+Caso4, Load Opc
+Subt Cuatro
+Skipcond 400
+Jump Inicio
+Halt
+
+//SUBRUTINAS
+
+//DESLIZAR IZQUIERDA
+ShiftIzquierda, HEX 0
+Load Dos
+Store A
+JnS Potencia
+Load SH_A
+Store A
+Load Resultado
+Store SH_B
+JnS Multiplicar
+Load Resultado
+Store SH_R
+JumpI ShiftIzquierda
+
+//DESLIZAR DERECHA
+ShiftDerecha, HEX 0
+Load Dos
+Store A
+JnS Potencia
+Load Resultado
+Store DIVISOR
+Load SH_A
+Store DIVIDENDO
+Clear
+Store COCIENTE
+JnS Divison
+Load Resultado
+Store SH_R
+JumpI ShiftDerecha
+
+JumpI ShiftDerecha
+
+//CAPTURA AB
+CapturaAB, HEX 0
+Input
+Store SH_A
+Input 
+Store SH_B
+JumpI CapturaAB
+
+//MULTIPLICACION OPTIMA
+Multiplicar, HEX 0
+Load A 
+Subt SH_B
+Skipcond 000
+Jump A>B
+
+Load A
+Store ContadorMult
+Load SH_B
+Store AddMul
+Jump IniciarMult
+
+A>B, Load SH_B
+Store ContadorMult
+Load A
+Store AddMul
+
+IniciarMult, Clear
+Store Resultado
+
+Ciclo, Load ContadorMult
+SkipCond 400
+Jump Body
+Jump Fin
+
+Body, Load Resultado
+Add AddMul
+Store Resultado
+Load ContadorMult
+Subt Uno
+Store ContadorMult
+Jump Ciclo
+
+Fin, JumpI Multiplicar
+
+//POTENCIA
+Potencia, HEX 0
+Load A
+Store BaseP
+
+Load Uno
+Store Resultado
+
+Load SH_B
+Store ContadorPot
+
+CicloP, Load ContadorPot
+Skipcond 400
+Jump BodyP
+Jump FinP
+
+BodyP, Load Resultado
+Store SH_B
+Load BaseP
+Store A
+
+JnS Multiplicar
+
+Load ContadorPot
+Subt Uno
+Store ContadorPot
+Jump CicloP
+
+FinP, JumpI Potencia
+
+//DIVISON
+
+Divison, HEX 0
+		
+WHILE, LOAD DIVIDENDO
+		SkipCond 800
+		JUMP FINALIZAR	/FALSE
+		/VERDADERO
+		Subt DIVISOR
+		SkipCond 000
+		JUMP IF		/FALSE -> IF 
+ELSE, LOAD DIVIDENDO
+	  Store RESIDUO/TRUE -> ELSE
+      JUMP FINALIZAR
+IF, Store DIVIDENDO
+	LOAD Uno
+	Add COCIENTE
+	Store COCIENTE
+	Jump WHILE
+
+FINALIZAR, LOAD COCIENTE
+			Store Resultado
+			JumpI Divison
+
+
+//VARIABLES
+
+A, DEC 0
+Resultado, DEC 0
+SH_A, DEC 0
+SH_B, DEC 0
+SH_R, DEC 0
+Desplazar, DEC 0
+Opc, DEC 0
+Uno, DEC 1
+Dos, DEC 2
+Tres, DEC 3
+Cuatro, DEC 4
+ContadorMult, DEC 0
+AddMul, DEC 0
+ContadorPot, DEC 0
+BaseP, DEC 0
+CERO, DEC 0
+COCIENTE, DEC 0
+RESIDUO, DEC 0
+DIVISOR, DEC 0
+DIVIDENDO, DEC 0

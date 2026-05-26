@@ -1,0 +1,179 @@
+Inicio, Input
+		Store Opc
+		
+		//Caso 1
+		Load Opc
+		Subt Uno
+		Skipcond 400
+		Jump Caso2
+		JnS ConvertirMinusculas
+		Jump Inicio
+
+// Caso 2
+Caso2, Load Opc
+		Subt Dos
+		Skipcond 400
+		Jump Caso3
+		JnS ConvertirMayusculas
+		Jump Inicio
+
+// Caso 3
+Caso3, Load Opc
+		Subt Tres
+		Skipcond 400
+		Jump Caso4
+		JnS MostrarCadena
+		Jump Inicio
+
+// Caso 4
+Caso4, Load Opc
+		Subt Cuatro
+		Skipcond 400
+		Jump Inicio
+		Halt
+
+
+//SUBRUTINAS
+
+ConvertirMinusculas, HEX 0
+		Load INCIO_CADENA
+		Store PTR
+
+CicloMinus, LoadI PTR
+		Skipcond 400  //Si AC=0 (NULL) Saltar al Final
+		Jump BodyMinus
+		Jump FinMinus
+
+/Comprobar si esta en rango de mayusculas
+BodyMinus,  LoadI PTR
+		Subt MayusA
+		Skipcond 000 
+		Jump AntesDeZ
+		Jump Siguiente
+
+
+AntesDeZ,   LoadI PTR
+		Subt MayusZ // (Restar 90 para ver si sigue dentro del rango de mayusculas)
+		Skipcond 800
+		Jump Suma
+		Jump Siguiente
+
+
+Suma,  LoadI PTR
+		Add Dif
+		StoreI PTR
+
+Siguiente, Load PTR
+		Add Uno
+		Store PTR
+		Jump CicloMinus
+
+FinMinus, JumpI ConvertirMinusculas
+
+		
+		ConvertirMayusculas, HEX 0
+		Load INCIO_CADENA
+		Store PTR
+
+CicloMayus, LoadI PTR 
+		Skipcond 400 //si es nulo sale del ciclo
+		Jump BodyMayus
+		Jump FinMayus
+
+//Verificar si esta en rango de minusculas
+BodyMayus,  LoadI PTR
+		Subt MinusA
+		Skipcond 000
+		Jump AntesDeZMinus
+		Jump SiguienteMayus
+
+//Verificar si sigue en rango de minusculas
+AntesDeZMinus, LoadI PTR
+		Subt MinusZ
+		Skipcond 800 
+		Jump Resta
+		Jump SiguienteMayus
+
+
+Resta,  LoadI PTR
+		Subt Dif
+		StoreI PTR
+
+SiguienteMayus, Load PTR
+		Add Uno
+		Store PTR
+		Jump CicloMayus
+
+FinMayus, JumpI ConvertirMayusculas
+
+
+//MOSTRARCADENA
+
+MostrarCadena,    HEX 0
+		Load INCIO_CADENA
+		Store PTR
+
+CicloMostrar, LoadI PTR
+		Skipcond 400 //terminar en AC=0
+		Jump Imprimir
+		Jump MostrarFin
+
+Imprimir, LoadI PTR
+		Output
+		Load PTR
+		Add Uno
+		Store PTR
+		Jump CicloMostrar
+
+MostrarFin, JumpI MostrarCadena
+
+
+//VARIABLES
+
+Opc, DEC 0
+PTR, HEX 00
+INCIO_CADENA, ADR CADENA
+Uno, DEC 1
+Dos,  DEC 2
+Tres, DEC 3
+Cuatro, DEC 4
+MayusA, DEC 65 // 'A' = 65
+MayusZ, DEC 90 // 'Z' = 90
+MinusA, DEC 97 // 'a' = 97
+MinusZ,  DEC 122 //'z' =122
+Dif, DEC 32 
+
+
+/CADENA = "OrGaniZaciOn de Computadoras"
+CADENA, DEC 79       
+DEC 114  	
+DEC 71	 	
+DEC 97			
+DEC 110	
+DEC 105	
+DEC 90	
+DEC 97	
+DEC 99	
+DEC 105	
+DEC 79	
+DEC 110
+DEC 32	
+DEC 100	
+DEC 101	
+DEC 32	
+DEC 67	
+DEC 111	
+DEC 109
+DEC 112
+DEC 117	
+DEC 116	
+DEC 97	
+DEC 100	
+DEC 111	
+DEC 114	
+DEC 97	
+DEC 115	
+DEC 32
+DEC 45
+DEC 32
+DEC 00	
